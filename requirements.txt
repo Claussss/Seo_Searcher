@@ -11,3 +11,5 @@ wcwidth==0.1.7
 webencodings==0.5.1
 wincertstore==0.2
 zipp==0.6.0
+boto==2.49.0
+chardet==3.0.4
