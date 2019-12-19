@@ -9,18 +9,6 @@ import datetime
 import os
 
 
-# In[6]:
-
-
-import sysconfig
-
-
-# In[14]:
-
-
-print(sysconfig.get_config_var('TEMP'))
-
-
 # In[2]:
 
 
@@ -68,7 +56,7 @@ class BotHandler:
 # In[3]:
 
 
-token = sysconfig.get_config_var('TELEGRAM_TOKEN') #Token of your bot
+token = os.environ.get('TELEGRAM_TOKEN') #Token of your bot
 magnito_bot = BotHandler(token) #Your bot's name
 
 
