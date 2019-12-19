@@ -56,7 +56,7 @@ class BotHandler:
 # In[3]:
 
 
-token = '938870264:AAHAL4RlulLbjEcgM1awC9eDoyHUtLa4jsQ' #Token of your bot
+token = TOKEN #Token of your bot
 magnito_bot = BotHandler(token) #Your bot's name
 
 
