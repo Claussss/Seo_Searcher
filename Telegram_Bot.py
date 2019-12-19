@@ -7,7 +7,18 @@
 import requests
 import datetime
 import os
-from boto.s3.connection import S3Connection
+
+
+# In[6]:
+
+
+import sysconfig
+
+
+# In[14]:
+
+
+print(sysconfig.get_config_var('TEMP'))
 
 
 # In[2]:
@@ -57,7 +68,7 @@ class BotHandler:
 # In[3]:
 
 
-token = S3Connection(os.environ['TELEGRAM_TOKEN']) #Token of your bot
+token = sysconfig.get_config_var('TELEGRAM_TOKEN') #Token of your bot
 magnito_bot = BotHandler(token) #Your bot's name
 
 
