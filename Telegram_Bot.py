@@ -93,6 +93,11 @@ def main():
                     new_offset = first_update_id + 1
                     continue
                     
+
+                print("Current directory: "+os.getcwd()+"\n")
+				print("List of files in the current directory:\n")
+				for file in os.listdir():
+    				print(file)
 #                 user_input = set((first_chat_text.lower()).split(' ')) # split and convert user input to set 
 #                 txt_list = os.listdir('txt') # list of txt files in derectory
 #                 found_flag = True
