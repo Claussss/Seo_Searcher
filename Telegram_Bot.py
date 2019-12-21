@@ -92,12 +92,10 @@ def main():
                     magnito_bot.send_message(first_chat_id, f"Hey, {first_chat_name}, what's up?\n\nI am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.\nI have all the lessons from the beginning to November 2019 in my database.\nHere are a few tips how to use me:\n1) Enter the keywords you can remember from a topic. As a separator use SPACE.\n(Warning, in one message you can write only keywords from THE SAME topic, otherwise I will send you nothing)\n2) The more keywords, the more specific the search.\n\nFor instance, you can write 'exposed to' or just 'exposed'.\nYou can mention a few key words from ONE topic, such as 'disappointed  devoted to discriminated' or 'much many'.\n\nNow send me something!")
                     new_offset = first_update_id + 1
                     continue
-                    
-
                 print("Current directory: "+os.getcwd()+"\n")
-				print("List of files in the current directory:\n")
-				for file in os.listdir():
-    				print(file)
+                print("List of files in the current directory:\n")
+                for file in os.listdir():
+                	print(file)
 #                 user_input = set((first_chat_text.lower()).split(' ')) # split and convert user input to set 
 #                 txt_list = os.listdir('txt') # list of txt files in derectory
 #                 found_flag = True
