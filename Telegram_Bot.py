@@ -56,7 +56,7 @@ class BotHandler:
 # In[3]:
 
 
-token = os.environ.get('TELEGRAM_TOKEN') #Token of your bot
+token = '938870264:AAHAL4RlulLbjEcgM1awC9eDoyHUtLa4jsQ'#os.environ.get('TELEGRAM_TOKEN') #Token of your bot
 magnito_bot = BotHandler(token) #Your bot's name
 
 
@@ -112,7 +112,8 @@ def main():
 	                    magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
 	                    new_offset = first_update_id + 1
         except:
-        	continue
+	        #magnito_bot.send_message(first_chat_id, 'Sorry, can you rewrite it differently?')
+	        new_offset = first_update_id + 1       	
 
 
 
