@@ -68,7 +68,7 @@ magnito_bot = BotHandler(token) #Your bot's name
 
 
 def main():
-	stickers = ['CAADAgADmAADGB0GD38JjVV51eNUFgQ','CAADAgADqQADGB0GD3PlulRsd1MkFgQ','CAADAgADvAADGB0GD6SysPS40rdzFgQ','CAADAgADjwADGB0GD0ckrhn7ST9JFgQ','CAADAgADnwADGB0GDyWgsIdx524-FgQ'] # ids of different stikers
+    stickers = ['CAADAgADmAADGB0GD38JjVV51eNUFgQ','CAADAgADqQADGB0GD3PlulRsd1MkFgQ','CAADAgADvAADGB0GD6SysPS40rdzFgQ','CAADAgADjwADGB0GD0ckrhn7ST9JFgQ','CAADAgADnwADGB0GDyWgsIdx524-FgQ'] # ids of different stikers
     new_offset = 0
     print('Now launching...')
 
