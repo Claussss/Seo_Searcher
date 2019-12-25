@@ -97,6 +97,7 @@ def main():
 	                    first_chat_name = "unknown"
 
 	                if first_chat_text == '/start':
+	                    '''
 	                    magnito_bot.send_message(first_chat_id, f"""
 	                    	Hey, {first_chat_name}, what's up?
 
@@ -112,6 +113,7 @@ def main():
 
 	                    	Now send me something!
 	                    	""")
+	                    '''
 	                    magnito_bot.send_sticker(first_chat_id,random.choice(stikers))
 	                    new_offset = first_update_id + 1
 	                    continue
