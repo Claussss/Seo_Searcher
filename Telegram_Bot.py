@@ -7,7 +7,7 @@
 import requests
 import datetime
 import os
-
+import random
 
 # In[2]:
 
@@ -39,7 +39,11 @@ class BotHandler:
         resp = requests.post(self.api_url + method,files=files,data=data)
         return resp
 
-
+    def send_sticker(self, chat_id,sticker_id):
+        method = 'sendSticker'
+        params = {'chat_id' : chat_id,'sticker':sticker_id}
+        resp = requests.post(self.api_url + method,params)
+        return resp
 
 
     def get_first_update(self):
@@ -64,6 +68,7 @@ magnito_bot = BotHandler(token) #Your bot's name
 
 
 def main():
+	stickers = ['CAADAgADmAADGB0GD38JjVV51eNUFgQ','CAADAgADqQADGB0GD3PlulRsd1MkFgQ','CAADAgADvAADGB0GD6SysPS40rdzFgQ','CAADAgADjwADGB0GD0ckrhn7ST9JFgQ','CAADAgADnwADGB0GDyWgsIdx524-FgQ'] # ids of different stikers
     new_offset = 0
     print('Now launching...')
 
@@ -92,8 +97,24 @@ def main():
 	                    first_chat_name = "unknown"
 
 	                if first_chat_text == '/start':
-	                    magnito_bot.send_message(first_chat_id, f"Hey, {first_chat_name}, what's up?\n\nI am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.\nI have all the lessons from the beginning to November 2019 in my database.\nHere are a few tips how to use me:\n1) Enter the keywords you can remember from a topic. As a separator use SPACE.\n(Warning, in one message you can write only keywords from THE SAME topic, otherwise I will send you nothing)\n2) The more keywords, the more specific the search.\n\nFor instance, you can write 'exposed to' or just 'exposed'.\nYou can mention a few key words from ONE topic, such as 'disappointed  devoted to discriminated' or 'much many'.\n\nNow send me something!")
+	                    magnito_bot.send_message(first_chat_id, f"""
+	                    	Hey, {first_chat_name}, what's up?
+
+	                    	I am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.
+	                    	I have all the lessons from the beginning to November 2019 in my database.
+	                    	Here are a few tips how to use me:
+	                    	1) Enter the keywords you can remember from a topic. As a separator use SPACE.
+	                    	(Warning, in one message you can write only keywords from THE SAME topic, otherwise I will send you nothing)
+	                    	2) The more keywords, the more specific the search.
+
+	                    	For instance, you can write 'exposed to' or just 'exposed'.
+	                    	You can mention a few key words from ONE topic, such as 'disappointed  devoted to discriminated' or 'much many'.
+
+	                    	Now send me something!
+	                    	""")
+	                    magnito_bot.send_sticker(first_chat_id,random.choice(stikers))
 	                    new_offset = first_update_id + 1
+	                    continue
 	                    
 	      
 
