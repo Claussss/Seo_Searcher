@@ -108,16 +108,20 @@ Hey, {first_chat_name}, what's up?
 I am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.
 I have all the lessons from the beginning to November 2019.
 
-Here are a few tips how to use me:
+--Here are a few tips how to use me:
 
-1) Enter the KEYWORDS you can remember from a topic. As a separator use SPACE.
+----1) Enter the KEYWORDS you can remember from a topic. As a separator use SPACE.
 
 WARNING: in one message you can write only keywords from THE SAME topic, otherwise I will send you nothing
 
-2) The MORE keywords, the more specific the search.
+----2) The MORE keywords, the more specific the search.
 
 For instance, you can write 'exposed to' or just 'exposed'.
 You can mention a few key words from ONE topic, such as 'disappointed  devoted to discriminated' or 'much many'.
+
+-------BONUS-------
+Furthermore, if you send me a date by using this template 'YEAR-MONTH', I will send you all the lessons of that month.
+For example, '2019-11' or '2018-01'.
 
 Now send me something!
 """)
