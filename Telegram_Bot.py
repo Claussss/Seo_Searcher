@@ -151,8 +151,8 @@ Now send me something!
 	                if found_flag:
 	                    magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
 	                    new_offset = first_update_id + 1
-        except:
-	        #magnito_bot.send_message(first_chat_id, 'Sorry, can you rewrite it differently?')
+        except Exception as e:
+	        magnito_bot.send_message(376385737, e)
 	        new_offset = first_update_id + 1       	
 
 
