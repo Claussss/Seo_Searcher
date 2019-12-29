@@ -8,7 +8,7 @@ from modules.user_input import UserInput
 from modules.bot_handler import BotHandler
 from modules.folders import FolderTxt,FolderImg
       
-token = '938870264:AAHAL4RlulLbjEcgM1awC9eDoyHUtLa4jsQ'#os.environ.get('TELEGRAM_TOKEN') #Token of the bot
+token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
 magnito_bot = BotHandler(token) #object of the Bot class
 
 
