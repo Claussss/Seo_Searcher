@@ -4,9 +4,147 @@
 import os
 import random
 import time
-from modules.user_input import UserInput
-from modules.bot_handler import BotHandler
-from modules.folders import FolderTxt,FolderImg
+#from modules.user_input import UserInput
+#from modules.bot_handler import BotHandler
+#from modules.folders import FolderTxt,FolderImg
+
+
+from googletrans import Translator
+from spellchecker import SpellChecker
+import re 
+
+
+
+class UserInput():
+    '''Represents message sent by the user.'''
+    def __init__(self,user_input):
+        self._translator = Translator().translate(user_input.lower())
+        self.spell_checker = SpellChecker()
+        self.lang = self._translator.src # language 
+        self.english_text = self._translator.text # translated text into English
+        self.original_text = self._translator.origin
+        self._bag_of_words = set(self.english_text.lower().split()) # default bag of words of the text with english translation
+
+    @property
+    def bag_of_words(self):
+        return self._bag_of_words
+
+    @bag_of_words.setter
+    def bag_of_words(self,new_bag):
+        if isinstance(new_bag,set):
+        	self._bag_of_words = new_bag
+
+        else:
+        	raise TypeError("The argument has to be a set()")
+        
+        
+    def has_english_context(self):
+        '''Returns True if the text language is English'''
+        return self.lang == 'en'
+    
+    def has_mistakes(self):
+        '''Returns True is there are mistakes'''
+        return bool(self.spell_checker.unknown(self.original_text.split())) # checking origin user input for mistakes (not translated)
+
+    def has_cyrillic(self):
+        '''Returns True is there are Cyrillic symbols'''
+        return bool(re.search('[а-яА-Я]', self.original_text))
+
+
+
+import os
+
+class BaseFolder:
+	def __init__(self,directory,extension):
+		self.directory = directory
+		self.extension = extension
+		self.list_of_files = os.listdir(directory)
+
+
+class FolderTxt(BaseFolder):
+
+	def search_for_matches(self,user_bag_of_words):
+		approptiate_file_names = []
+		for txt_f in self.list_of_files: # grabbing all txt files in the directory
+		    f = open(self.directory+txt_f,"r")
+		    text = set(f.read().split()) # getting a bag of words from the txt files
+		    if user_bag_of_words.issubset(text): # check if the user input is a subset of the bag of words
+		    	approptiate_file_names.append(txt_f)
+		    	f.close()
+		return approptiate_file_names
+
+
+class FolderImg(BaseFolder):
+
+	def open_img(self,file_name):
+
+		full_file_name = file_name+"."+self.extension
+		if full_file_name in self.list_of_files:
+			return open(self.directory+full_file_name,'rb')
+
+		raise KeyError("There is no file like that")
+		
+
+
+import requests
+
+class BotHandler:
+    '''Contains a number of methods to manage a bot by using HTTP requests'''
+    def __init__(self, token):
+            self.token = token
+            self.api_url = "https://api.telegram.org/bot{}/".format(token)
+            self._cache_imgs = {}
+
+    #url = "https://api.telegram.org/bot<token>/"
+
+    def get_updates(self, offset=0, timeout=30):
+        '''Gets updates from the server (new messages, people) by using requests library'''
+        method = 'getUpdates'
+        params = {'timeout': timeout, 'offset': offset}
+        resp = requests.get(self.api_url + method, params)
+        return resp.json()
+
+    def send_message(self, chat_id, text):
+        params = {'chat_id': chat_id, 'text': text, 'parse_mode': 'HTML'}
+        method = 'sendMessage'
+        resp = requests.post(self.api_url + method, params)
+        return resp
+    
+    
+    def send_photo(self, chat_id,photo_file):
+        method = 'sendPhoto'
+
+        if photo_file.name in self._cache_imgs: # checks if the photo already exists
+            photo_id = self._cache_imgs[photo_file.name]
+            params = {'chat_id' : chat_id,'photo': photo_id}# if exists, the bot sends photo by using it ID in telegram
+            resp = requests.post(self.api_url + method,params)
+
+        else:
+            files = {'photo': photo_file}
+            data = {'chat_id' : chat_id} # unless, it uploads photo and adds it to cache
+            resp = (requests.post(self.api_url + method,data = data, files = files)).json()
+            self._cache_imgs[photo_file.name] = resp['result']['photo'][2]['file_id']
+
+        return resp
+   
+
+    def send_sticker(self, chat_id,sticker_id):
+        method = 'sendSticker'
+        params = {'chat_id' : chat_id,'sticker':sticker_id}
+        resp = requests.post(self.api_url + method,params)
+        return resp
+
+
+    def get_first_update(self):
+        get_result = self.get_updates()
+
+        if len(get_result) > 0:
+            last_update = get_result[0]
+        else:
+            last_update = None
+
+        return last_update
+
       
 token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
 magnito_bot = BotHandler(token) #object of the Bot class
