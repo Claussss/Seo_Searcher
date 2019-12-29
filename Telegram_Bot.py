@@ -9,11 +9,31 @@ import datetime
 import os
 import random
 import time
+from googletrans import Translator
+from spellchecker import SpellChecker
 
-# In[2]:
+class UserInput:
+    '''Represents message sent by the user'''
+    def __init__(self,user_input):
+        self._translator = Translator().translate(user_input)
+        self.spell_checker = SpellChecker()
+        self.lang = self._translator.src # language 
+        self.text = self._translator.text # translated text into English
+        self.origin_text = self._translator.origin
+        self.bag_of_words = set(self.text.lower().split()) # set of unique words from origin user input
 
+        
+    def isEnglish(self):
+        '''Returns True if the text language is Endlish'''
+        return self.lang == 'en'
+    
+    def isMistake(self):
+        '''Returns True is there are mistakes'''
+        return bool(self.spell_checker.unknown(self.origin_text.split())) # checking origin user input for mistakes (not translated)
+        
 
 class BotHandler:
+    '''Contains a number of methods to manage a bot by using HTTP requests'''
     def __init__(self, token):
             self.token = token
             self.api_url = "https://api.telegram.org/bot{}/".format(token)
@@ -21,6 +41,7 @@ class BotHandler:
     #url = "https://api.telegram.org/bot<token>/"
 
     def get_updates(self, offset=0, timeout=30):
+        '''Gets updates from the server (new messages, people) by using requests library'''
         method = 'getUpdates'
         params = {'timeout': timeout, 'offset': offset}
         resp = requests.get(self.api_url + method, params)
@@ -57,19 +78,26 @@ class BotHandler:
         return last_update
 
 
-# In[3]:
 
 
-token = os.environ.get('TELEGRAM_TOKEN') #Token of your bot
-magnito_bot = BotHandler(token) #Your bot's name
+
+token = '938870264:AAHAL4RlulLbjEcgM1awC9eDoyHUtLa4jsQ'#os.environ.get('TELEGRAM_TOKEN') #Token of the bot
+magnito_bot = BotHandler(token) #object of the Bot class
 
 
-# In[28]:
+
 
 
 def main():
-    stickers = ['CAADAgADmAADGB0GD38JjVV51eNUFgQ','CAADAgADqQADGB0GD3PlulRsd1MkFgQ','CAADAgADvAADGB0GD6SysPS40rdzFgQ','CAADAgADjwADGB0GD0ckrhn7ST9JFgQ','CAADAgADnwADGB0GDyWgsIdx524-FgQ'] # ids of different stikers
+    stickers = [
+    'CAADAgADmAADGB0GD38JjVV51eNUFgQ',
+    'CAADAgADqQADGB0GD3PlulRsd1MkFgQ',
+    'CAADAgADvAADGB0GD6SysPS40rdzFgQ',
+    'CAADAgADjwADGB0GD0ckrhn7ST9JFgQ',
+    'CAADAgADnwADGB0GDyWgsIdx524-FgQ'] # ids of stikers
+
     new_offset = 0
+    
     print('Now launching...')
 
     while True:
@@ -136,23 +164,47 @@ Now send me something!
 	                    
 	      
 
-	                user_input = set((first_chat_text.lower()).split(' ')) # split and convert user input to set 
+	                user_input = UserInput(first_chat_text)
+
+	                if not user_input.isEnglish(): # translates the user input when the language is not English
+	                	magnito_bot.send_message(first_chat_id,f"The translation is '{user_input.text}'")				                	
+
+	                elif user_input.isMistake(): #if the user input language is English and there are mistakes
+	                	all_words = set(user_input.origin_text.split()) # set of all words in user input
+	                	wrong_words = user_input.spell_checker.unknown(all_words)
+	                	corrected_words = []
+	                	message_to_user = "Spelling correction:\n"
+
+	                	for word in wrong_words:
+	                		corrected_word = user_input.spell_checker.correction(word)
+	                		message_to_user+=f"{word} -> {corrected_word}\n"
+	                		corrected_words.append(corrected_word)
+
+	                	magnito_bot.send_message(first_chat_id,message_to_user)
+	                	user_input.bag_of_words = all_words.difference(wrong_words).union(corrected_words)
+
 	                txt_list = os.listdir('txt') # list of txt files in derectory
 	                found_flag = True
-	                if len(first_chat_text)>=3:
+
+	                if len(user_input.origin_text)>=3: # message len has to greater than 2
+
 		                for txt_f in txt_list: # grabbing all txt files in the directory
+
 		                    f = open("txt/"+txt_f,"r")
 		                    text = set(f.read().split()) # getting a bag of words from the txt's
-		                    if user_input.issubset(text): # check if the user input is a subset of the bag of words
+
+		                    if user_input.bag_of_words.issubset(text): # check if the user input is a subset of the bag of words
 		                        magnito_bot.send_photo(first_chat_id,txt_f[:-4]) # sending a corresponding picture
 		                        new_offset = first_update_id + 1
 		                        found_flag = False
+
 		                    f.close()
 	                if found_flag:
 	                    magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
 	                    new_offset = first_update_id + 1
         except Exception as e:
 	        magnito_bot.send_message(376385737, e)
+	        raise e
 	        new_offset = first_update_id + 1       	
 
 
@@ -161,7 +213,6 @@ if __name__ == '__main__':
     main()
 
 
-# In[ ]:
 
 
 
