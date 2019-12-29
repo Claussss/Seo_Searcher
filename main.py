@@ -5,18 +5,22 @@ import os
 import random
 import time
 #from modules.user_input import UserInput
-from modules.bot_handler import BotHandler
-from modules.folders import FolderTxt,FolderImg
+#from modules.bot_handler import BotHandler
+#from modules.folders import FolderTxt,FolderImg
 
 
 
 
       
-token = '938870264:AAHAL4RlulLbjEcgM1awC9eDoyHUtLa4jsQ'#os.environ.get('TELEGRAM_TOKEN') #Token of the bot
-magnito_bot = BotHandler(token) #object of the Bot class
+#token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
+#magnito_bot = BotHandler(token) #object of the Bot class
 
 
 def main():
+	for i in range(10):
+		print("Program is running\n")
+		time.sleep(3)
+	'''
     stickers = [
     'CAADAgADmAADGB0GD38JjVV51eNUFgQ',
     'CAADAgADqQADGB0GD3PlulRsd1MkFgQ',
@@ -90,7 +94,7 @@ Now send me something!
 	                	continue
 	                    
 	                    
-	                '''    	     
+	                    	     
 	                user_input = UserInput(first_chat_text)
 
 	                if user_input.has_cyrillic(): # checks if there are Cyrillic symbols
@@ -125,14 +129,14 @@ Now send me something!
 		                else:
 		                	magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
 		                	new_offset = first_update_id + 1
-		            '''
 
 	
 	        	                
         except Exception as e:
 	        magnito_bot.send_message(376385737, e)
 	        raise e
-	        new_offset = first_update_id + 1       	
+	        new_offset = first_update_id + 1
+	'''     	
 
 
 
