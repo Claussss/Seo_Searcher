@@ -4,23 +4,21 @@
 import os
 import random
 import time
-#from modules.user_input import UserInput
-#from modules.bot_handler import BotHandler
-#from modules.folders import FolderTxt,FolderImg
+from modules.user_input import UserInput
+from modules.bot_handler import BotHandler
+from modules.folders import FolderTxt,FolderImg
 
 
 
 
       
-#token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
-#magnito_bot = BotHandler(token) #object of the Bot class
+token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
+magnito_bot = BotHandler(token) #object of the Bot class
 
 
 def main():
-	for i in range(10):
-		print("Program is running\n")
-		time.sleep(3)
-	'''
+
+	
     stickers = [
     'CAADAgADmAADGB0GD38JjVV51eNUFgQ',
     'CAADAgADqQADGB0GD3PlulRsd1MkFgQ',
@@ -136,7 +134,7 @@ Now send me something!
 	        magnito_bot.send_message(376385737, e)
 	        raise e
 	        new_offset = first_update_id + 1
-	'''     	
+	     	
 
 
 
