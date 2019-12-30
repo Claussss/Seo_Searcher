@@ -98,7 +98,7 @@ Now send me something!
 	                if user_input.has_cyrillic(): # checks if there are Cyrillic symbols
 	                	magnito_bot.send_message(first_chat_id,f"The translation is '{user_input.english_text}'")				                	
 
-	                elif user_input.has_mistakes(): #if the user input language is English and there are mistakes
+	                elif user_input.has_mistakes() and (not user_input.has_date()): #if the user input language is English and there are mistakes
 	                	all_words = set(user_input.original_text.split()) # set of all words in user input
 	                	wrong_words = user_input.spell_checker.unknown(all_words)
 	                	corrected_words = []
