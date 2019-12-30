@@ -115,6 +115,9 @@ Now send me something!
 	                txt_folder = FolderTxt("txt/","txt")
 	                img_folder = FolderImg("img/","jpg")
 
+	                negative_result = False
+
+
 	                if len(user_input.original_text)>=3:
 
 		                list_of_matches = txt_folder.search_for_matches(user_input.bag_of_words)
@@ -124,9 +127,14 @@ Now send me something!
 
 		                		new_offset = first_update_id + 1
 
-		                else:
-		                	magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
-		                	new_offset = first_update_id + 1
+	                	else:
+		                	negative_result = True
+	                else:
+	                	negative_result = True
+
+	                if negative_result:
+	                	magnito_bot.send_message(first_chat_id, 'Sorry, there is nothing like that. Try something else!')
+	                	new_offset = first_update_id + 1
 
 	
 	        	                
