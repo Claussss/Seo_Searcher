@@ -6,6 +6,17 @@ class BaseFolder:
 		self.extension = extension
 		self.list_of_files = os.listdir(directory)
 
+	def __nonzero__(self):
+		return bool(self.list_of_files)
+
+	def __iter__(self):
+		return self.list_of_files.__iter__()
+
+	def __repr__(self):
+		return f"directory: {self.directory}\nnummber of files: {len(self.list_of_files)}\nextensions: .{self.extension}"
+
+
+
 
 class FolderTxt(BaseFolder):
 
@@ -30,3 +41,4 @@ class FolderImg(BaseFolder):
 
 		raise KeyError("There is no file like that")
 		
+

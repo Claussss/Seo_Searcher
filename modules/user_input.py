@@ -40,5 +40,5 @@ class UserInput():
         return bool(re.search('[а-яА-Я]', self.original_text))
 
     def has_date(self):
-        '''Returns True is there are Cyrillic symbols'''
+        '''Returns True is there are dates'''
         return bool(re.search(r'\d{4}-\d{2}', self.original_text))
