@@ -91,7 +91,7 @@ Now send me something!
 	                	new_offset = first_update_id + 1
 	                	continue
 	                    
-	                    
+	                magnito_bot.send_chat_action(first_chat_id,'typing')    
 	                    	     
 	                user_input = UserInput(first_chat_text)
 
@@ -122,7 +122,9 @@ Now send me something!
 
 		                list_of_matches = txt_folder.search_for_matches(user_input.bag_of_words)
 		                if list_of_matches:
+		                	magnito_bot.send_chat_action(first_chat_id,'upload_photo')
 		                	for name_of_file in list_of_matches:
+		                		 
 		                		magnito_bot.send_photo(first_chat_id,img_folder.open_img(name_of_file[:-4])) # sending a corresponding picture
 
 		                		new_offset = first_update_id + 1
