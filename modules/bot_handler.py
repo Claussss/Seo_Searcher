@@ -36,7 +36,6 @@ class BotHandler:
             photo_id = self._cache_imgs[photo_file.name]
             params = {'chat_id' : chat_id,'photo': photo_id}# if exists, the bot sends photo by using it ID in telegram
             resp = requests.post(self.api_url + method,params)
-            print("Cached")
 
         else:
             files = {'photo': photo_file}
