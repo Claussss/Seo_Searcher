@@ -125,7 +125,9 @@ Now send me something!
 		                	magnito_bot.send_chat_action(first_chat_id,'upload_photo')
 		                	for name_of_file in list_of_matches:
 		                		 
-		                		magnito_bot.send_photo(first_chat_id,img_folder.open_img(name_of_file[:-4])) # sending a corresponding picture
+		                		photo_f = img_folder.open_img(name_of_file[:-4]) # returns file object reader
+		                		magnito_bot.send_photo(first_chat_id,photo_f) # sending a corresponding picture
+		                		photo_f.close() # close the file object reader
 
 		                		new_offset = first_update_id + 1
 

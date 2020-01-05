@@ -32,13 +32,13 @@ class UserInput():
         return self.lang == 'en'
     
     def has_mistakes(self):
-        '''Returns True is there are mistakes'''
+        '''Returns True if there are mistakes'''
         return bool(self.spell_checker.unknown(self.original_text.split())) # checking origin user input for mistakes (not translated)
 
     def has_cyrillic(self):
-        '''Returns True is there are Cyrillic symbols'''
+        '''Returns True if there are Cyrillic symbols'''
         return bool(re.search('[а-яА-Я]', self.original_text))
 
     def has_date(self):
-        '''Returns True is there are dates'''
+        '''Returns True if there are dates'''
         return bool(re.search(r'\d{4}-\d{2}', self.original_text))
