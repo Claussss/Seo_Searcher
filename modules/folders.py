@@ -33,7 +33,7 @@ class FolderTxt(BaseFolder):
 
 class FolderImg(BaseFolder):
 
-	def img_name(self,file_name):
+	def path_to_img(self,file_name):
 		'''Returns the string that represents the relative path for an image'''
 
 		full_file_name = file_name+"."+self.extension
@@ -42,4 +42,3 @@ class FolderImg(BaseFolder):
 
 		raise KeyError("There is no file like that")
 		
-

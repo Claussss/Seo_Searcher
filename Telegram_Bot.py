@@ -7,6 +7,7 @@ import time
 from modules.user_input import UserInput
 from modules.bot_handler import BotHandler
 from modules.folders import FolderTxt,FolderImg
+import json
 
 
 
@@ -93,12 +94,19 @@ Now send me something!
 	                    
 	                magnito_bot.send_chat_action(first_chat_id,'typing')    
 	                    	     
-	                user_input = UserInput(first_chat_text)
+	                try:
+	                	user_input = UserInput(first_chat_text)
+
+	                except json.decoder.JSONDecodeError:
+	                	magnito_bot.send_message(first_chat_id, f"And what should I do with that {first_chat_text} ?") # if there is an emoji, it send that very emoji to the user back
+	                	new_offset = first_update_id + 1
+	                	continue
+
 
 	                if user_input.has_cyrillic(): # checks if there are Cyrillic symbols
 	                	magnito_bot.send_message(first_chat_id,f"The translation is '{user_input.english_text}'")				                	
 
-	                elif user_input.has_mistakes() and (not user_input.has_date()): #if the user input language is English and there are mistakes
+	                elif user_input.has_mistakes() and (not user_input.has_date()): #True if there is no emoji or date, and there is a mistake
 	                	all_words = set(user_input.original_text.split()) # set of all words in user input
 	                	wrong_words = user_input.spell_checker.unknown(all_words)
 	                	corrected_words = []
@@ -125,7 +133,7 @@ Now send me something!
 		                	magnito_bot.send_chat_action(first_chat_id,'upload_photo')
 		                	for name_of_file in list_of_matches:
 		                		 
-		                		with open(img_folder.img_name(name_of_file[:-4]),'rb') as photo_f:
+		                		with open(img_folder.path_to_img(name_of_file[:-4]),'rb') as photo_f:
 		                			magnito_bot.send_photo(first_chat_id,photo_f) # send a corresponding picture
 
 		                		new_offset = first_update_id + 1
@@ -143,7 +151,8 @@ Now send me something!
 	        	                
         except Exception as e:
 	        magnito_bot.send_message(376385737, e)
-	        raise e
+	        magnito_bot.send_message(376385737, user_input.has_emoji())
+	        #raise e
 	        new_offset = first_update_id + 1
 	     	
 

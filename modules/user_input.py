@@ -1,7 +1,7 @@
 from googletrans import Translator
 from spellchecker import SpellChecker
 import re 
-
+from emoji import UNICODE_EMOJI
 
 
 class UserInput():
@@ -11,7 +11,7 @@ class UserInput():
         self.spell_checker = SpellChecker()
         self.lang = self._translator.src # language 
         self.english_text = self._translator.text # translated text into English
-        self.original_text = self._translator.origin
+        self.original_text = user_input
         self._bag_of_words = set(self.english_text.lower().split()) # default bag of words of the text with english translation
 
     @property
@@ -42,3 +42,11 @@ class UserInput():
     def has_date(self):
         '''Returns True if there are dates'''
         return bool(re.search(r'\d{4}-\d{2}', self.original_text))
+'''
+    def has_emoji(self):
+        #Returns True if there is an emoji
+        for char in self.original_text:
+            if char in UNICODE_EMOJI:
+                return True
+        return False
+'''
