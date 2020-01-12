@@ -98,7 +98,7 @@ Now send me something!
 	                	user_input = UserInput(first_chat_text)
 
 	                except json.decoder.JSONDecodeError:
-	                	magnito_bot.send_message(first_chat_id, f"And what should I do with that {first_chat_text} ?") # if there is an emoji, it send that very emoji to the user back
+	                	magnito_bot.send_message(first_chat_id,first_chat_text*2) # if there is an emoji, it send that very emoji to the user back
 	                	new_offset = first_update_id + 1
 	                	continue
 
