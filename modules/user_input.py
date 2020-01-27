@@ -42,11 +42,3 @@ class UserInput():
     def has_date(self):
         '''Returns True if there are dates'''
         return bool(re.search(r'\d{4}-\d{2}', self.original_text))
-'''
-    def has_emoji(self):
-        #Returns True if there is an emoji
-        for char in self.original_text:
-            if char in UNICODE_EMOJI:
-                return True
-        return False
-'''

@@ -1,4 +1,5 @@
 import os
+from collections import Counter
 
 class BaseFolder:
 	def __init__(self,directory,extension):
@@ -20,14 +21,29 @@ class BaseFolder:
 
 class FolderTxt(BaseFolder):
 
+	
+	def __init__(self,*args):
+		super().__init__(*args)
+
+		self.content_of_txt_files = {}
+
+		self.list_of_all_words = []
+
+		for file_name in self.list_of_files: # grabbing all txt files in the directory
+		    with open(self.directory+file_name,"r") as f:
+		    	file_content = f.read()
+		    	self.content_of_txt_files[file_name] = set(file_content.split()) # bag_of_words_of_txt_file
+		    	self.list_of_all_words+=file_content.split()
+
+		counter_of_all_words = sorted(Counter(self.list_of_all_words))
+		for i in counter_of_all_words: # STopped here
+			print(i)
+
+		    	 
+
+
 	def search_for_matches(self,user_bag_of_words):
-		approptiate_file_names = []
-		for txt_f in self.list_of_files: # grabbing all txt files in the directory
-		    f = open(self.directory+txt_f,"r")
-		    text = set(f.read().split()) # getting a bag of words from the txt files
-		    if user_bag_of_words.issubset(text): # check if the user input is a subset of the bag of words
-		    	approptiate_file_names.append(txt_f)
-		    	f.close()
+		approptiate_file_names = [file_name for file_name in self.content_of_txt_files if self.content_of_txt_files[file_name].issuperset(user_bag_of_words)]
 		return approptiate_file_names
 
 

@@ -15,6 +15,8 @@ import json
       
 token = os.environ.get('TELEGRAM_TOKEN') #Token of the bot
 magnito_bot = BotHandler(token) #object of the Bot class
+txt_folder = FolderTxt("txt/","txt")
+img_folder = FolderImg("img/","jpg")
 
 
 def main():
@@ -120,8 +122,7 @@ Now send me something!
 	                	magnito_bot.send_message(first_chat_id,message_to_user)
 	                	user_input.bag_of_words = all_words.difference(wrong_words).union(corrected_words)
 
-	                txt_folder = FolderTxt("txt/","txt")
-	                img_folder = FolderImg("img/","jpg")
+
 
 	                negative_result = False
 

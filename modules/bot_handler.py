@@ -62,3 +62,4 @@ class BotHandler:
             last_update = None
 
         return last_update
+
