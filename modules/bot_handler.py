@@ -1,4 +1,5 @@
 import requests
+import json
 
 
 class BotHandler:
@@ -7,7 +8,8 @@ class BotHandler:
     def __init__(self, token):
         self.token = token
         self.api_url = "https://api.telegram.org/bot{}/".format(token)
-        self._cache_imgs = {}
+        with open('all_images_ids.json','r') as f:
+            self._cache_imgs = json.load(f)
 
     #url = "https://api.telegram.org/bot<token>/"
 

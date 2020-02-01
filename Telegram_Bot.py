@@ -140,10 +140,8 @@ Now send me something!
 
                     if len(user_input.original_text) >= 3:
 
-                        time1 = datetime.now()
                         list_of_matches = txt_folder.search_for_matches(
                             user_input.bag_of_words)
-                        print(f"\n==================================\nIt takes {datetime.now()-time1}\n======================")
                         if list_of_matches:
                             magnito_bot.send_chat_action(
                                 first_chat_id, 'upload_photo')
@@ -151,10 +149,11 @@ Now send me something!
 
                                 with open(img_folder.path_to_img(name_of_file), 'rb') as photo_f:
                                     # send a corresponding picture
-                                    magnito_bot.send_photo(
-                                        first_chat_id, photo_f)
+                                    magnito_bot.send_photo(first_chat_id, photo_f)
 
                                 new_offset = first_update_id + 1
+
+
 
                         else:
                             negative_result = True

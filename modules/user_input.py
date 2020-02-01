@@ -27,9 +27,6 @@ class UserInput():
         else:
             raise TypeError("The argument has to be a set()")
 
-    def has_english_context(self):
-        '''Returns True if the text language is English'''
-        return self.lang == 'en'
 
     def has_mistakes(self):
         '''Returns True if there are mistakes'''
