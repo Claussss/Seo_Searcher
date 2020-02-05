@@ -38,7 +38,6 @@ class FolderTxt(BaseFolder):
                 self.bag_of_all_words.union(bag_of_file_content)
 
     def search_for_matches(self, user_bag_of_words):
-
         approptiate_file_names = [file_name[:-4] for file_name in self.content_of_txt_files 
         if self.content_of_txt_files[file_name].issuperset(user_bag_of_words)]
         return approptiate_file_names

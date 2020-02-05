@@ -31,74 +31,32 @@ def main():
 
     while True:
         try:
-            all_updates = None
             all_updates = magnito_bot.get_updates(new_offset)
 
-            if 'result' not in all_updates:
-                time.sleep(2)
-                continue
-
-            all_updates = all_updates['result']
-
-            if len(all_updates) > 0:
+            if all_updates != None:
 
                 for current_update in all_updates:
 
                     print(current_update)
+
                     first_update_id = current_update['update_id']
-
-                    if 'text' not in current_update['message']:
-                        first_chat_text = 'New member'
-                    else:
-                        first_chat_text = current_update['message']['text']
-
                     first_chat_id = current_update['message']['chat']['id']
-                    if 'first_name' in current_update['message']:
-                        first_chat_name = current_update[
-                            'message']['chat']['first_name']
+                    first_chat_name = current_update['message']['from']['first_name']
+                    first_chat_text = current_update['message']['text']
 
-                    elif 'new_chat_member' in current_update['message']:
-                        first_chat_name = current_update['message'][
-                            'new_chat_member']['username']
-
-                    elif 'from' in current_update['message']:
-                        first_chat_name = current_update[
-                            'message']['from']['first_name']
-
-                    else:
-                        first_chat_name = "unknown"
 
                     if first_chat_text == '/start':
-                        magnito_bot.send_message(first_chat_id, f"""
-Hey, {first_chat_name}, what's up?
 
-I am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.
-Also, I have built-in google translator, so you can write keywords in Russian or Ukrainian.
-I have all the lessons from the beginning to November 2019.
+                        with open('greetings.txt', 'r', encoding="utf8") as file:
+                            greeting_message = file.read()
 
-Here are a few tips how to use me:
-
-----1) Enter the KEYWORDS you can remember from a topic. As a separator use SPACE.
-
-WARNING: in one message you can write only keywords from THE SAME topic, otherwise I will send you nothing
-
-----2) The MORE keywords, the more specific the search.
-
-For instance, you can write 'exposed to' or just 'exposed', 'помнить', 'пам'ятати'.
-You can mention a few key words from ONE topic, such as 'disappointed  devoted to discriminated', 'much many' or 'рисковать'.
-
--------BONUS-------
-Furthermore, if you send me a date by using this template 
-'YEAR-MONTH', I will send you all the lessons of that month.
-For example, '2019-11' or '2018-01'.
-
-Now send me something!
-""")
-
+                        magnito_bot.send_message(first_chat_id,greeting_message.format(first_chat_name)) # inserting the user name
                         magnito_bot.send_sticker(
                             first_chat_id, random.choice(stickers))
+
                         new_offset = first_update_id + 1
                         continue
+
 
                     magnito_bot.send_chat_action(first_chat_id, 'typing')
 
@@ -138,7 +96,7 @@ Now send me something!
 
                     negative_result = False
 
-                    if len(user_input.original_text) >= 3:
+                    if len(user_input.original_text) >= 3: # skips input if user text len < 3
 
                         list_of_matches = txt_folder.search_for_matches(
                             user_input.bag_of_words)
@@ -167,7 +125,7 @@ Now send me something!
 
         except Exception as e:
             magnito_bot.send_message(376385737, e)
-            #raise e
+            # raise e
             new_offset = first_update_id + 1
 
 
