@@ -25,21 +25,17 @@ class FolderTxt(BaseFolder):
         super().__init__(*args)
 
         self.content_of_txt_files = {}
-        self.bag_of_all_words = set()
 
         for file_name in self.list_of_files:  # grabbing all txt files in the directory
 
             with open(self.directory + file_name, "r") as f:
-
-                bag_of_file_content = set(f.read().split())
-
-                # bag_of_words_of_txt_file
-                self.content_of_txt_files[file_name] = bag_of_file_content
-                self.bag_of_all_words.union(bag_of_file_content)
+                self.content_of_txt_files[file_name] = set(f.read().split())
 
     def search_for_matches(self, user_bag_of_words):
+
         approptiate_file_names = [file_name[:-4] for file_name in self.content_of_txt_files 
         if self.content_of_txt_files[file_name].issuperset(user_bag_of_words)]
+
         return approptiate_file_names
 
 

@@ -1,12 +1,12 @@
 import os
 import random
 import time
+import json
+from googletrans import Translator
 from modules.user_input import UserInput
 from modules.bot_handler import BotHandler
 from modules.folders import FolderTxt, FolderImg
-import json
 
-from datetime import datetime
 
 
 token = os.environ.get('TELEGRAM_TOKEN')  # Token of the bot
@@ -33,7 +33,7 @@ def main():
         try:
             all_updates = magnito_bot.get_updates(new_offset)
 
-            if all_updates != None:
+            if all_updates:
 
                 for current_update in all_updates:
 
@@ -51,58 +51,62 @@ def main():
                             greeting_message = file.read()
 
                         magnito_bot.send_message(first_chat_id,greeting_message.format(first_chat_name)) # inserting the user name
-                        magnito_bot.send_sticker(
-                            first_chat_id, random.choice(stickers))
+                        magnito_bot.send_sticker(first_chat_id, random.choice(stickers))
 
                         new_offset = first_update_id + 1
                         continue
 
 
-                    magnito_bot.send_chat_action(first_chat_id, 'typing')
+                    magnito_bot.send_chat_action(first_chat_id, 'typing') # show user that the bot starts searching
 
-                    try:
-                        user_input = UserInput(first_chat_text)
+                    user_input = UserInput(first_chat_text)
 
-                    except json.decoder.JSONDecodeError:
-                        # if there is an emoji, it send that very emoji to the
-                        # user back
-                        magnito_bot.send_message(
-                            first_chat_id, first_chat_text * 2)
+                    if user_input.has_emoji():
+
+                        magnito_bot.send_message(first_chat_id, 'Do you really think that Ksenia draws emoji at our lessons?')
+
                         new_offset = first_update_id + 1
                         continue
+                        
+                    
+                    elif user_input.has_cyrillic():  # checks if there are Cyrillic symbols
+                        
+                        translator = Translator()
 
-                    if user_input.has_cyrillic():  # checks if there are Cyrillic symbols
-                        magnito_bot.send_message(first_chat_id, f"The translation is '{user_input.english_text}'")
+                        try:
+                            translated_user_input = translator.translate(user_input.text.lower()).text
 
-                    # True if there is no emoji or date, and there is a mistake
+                        except json.decoder.JSONDecodeError:
+
+                            magnito_bot.send_message(first_chat_id, first_chat_text * 2) # doubles that symbol and sends to the user
+
+                            new_offset = first_update_id + 1
+                            continue
+
+                        user_input.text = translated_user_input
+
+                        magnito_bot.send_message(first_chat_id, f"The translation is '{user_input.text}'")
+
+
+                    # True if there is no date, and there is a mistake
                     elif user_input.has_mistakes() and (not user_input.has_date()):
-                        # set of all words in user input
-                        all_words = set(user_input.original_text.split())
-                        wrong_words = user_input.spell_checker.unknown(
-                            all_words)
-                        corrected_words = []
-                        message_to_user = "Spelling correction:\n"
+                        
+                        message_to_user = user_input.correct_mistakes_in_text()
 
-                        for word in wrong_words:
-                            corrected_word = user_input.spell_checker.correction(
-                                word)
-                            message_to_user += f"{word} -> {corrected_word}\n"
-                            corrected_words.append(corrected_word)
+                        magnito_bot.send_message(first_chat_id, message_to_user)
 
-                        magnito_bot.send_message(
-                            first_chat_id, message_to_user)
-                        user_input.bag_of_words = all_words.difference(
-                            wrong_words).union(corrected_words)
+
 
                     negative_result = False
 
-                    if len(user_input.original_text) >= 3: # skips input if user text len < 3
+                    if len(user_input.text) >= 3: # skips if the len of the text less than 3
 
-                        list_of_matches = txt_folder.search_for_matches(
-                            user_input.bag_of_words)
+                        list_of_matches = txt_folder.search_for_matches(user_input.bag_of_words)
+
                         if list_of_matches:
-                            magnito_bot.send_chat_action(
-                                first_chat_id, 'upload_photo')
+
+                            magnito_bot.send_chat_action(first_chat_id, 'upload_photo')
+
                             for name_of_file in list_of_matches:
 
                                 with open(img_folder.path_to_img(name_of_file), 'rb') as photo_f:
@@ -110,8 +114,6 @@ def main():
                                     magnito_bot.send_photo(first_chat_id, photo_f)
 
                                 new_offset = first_update_id + 1
-
-
 
                         else:
                             negative_result = True
@@ -125,7 +127,7 @@ def main():
 
         except Exception as e:
             magnito_bot.send_message(376385737, e)
-            # raise e
+            raise e
             new_offset = first_update_id + 1
 
 

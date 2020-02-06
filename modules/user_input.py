@@ -1,5 +1,5 @@
-from googletrans import Translator
 from spellchecker import SpellChecker
+from emoji import UNICODE_EMOJI
 import re
 
 
@@ -7,36 +7,56 @@ class UserInput():
     '''Represents message sent by the user.'''
 
     def __init__(self, user_input):
-        self._translator = Translator().translate(user_input.lower())
-        self.spell_checker = SpellChecker()
-        self.lang = self._translator.src  # language
-        self.english_text = self._translator.text  # translated text into English
-        self.original_text = user_input
-        # default bag of words of the text with english translation
-        self._bag_of_words = set(self.english_text.lower().split())
+        self._spell_checker = SpellChecker()
+        self._text = user_input
+        self.bag_of_words = set(self._text.lower().split()) # default bag of words of the text with english translation
 
     @property
-    def bag_of_words(self):
-        return self._bag_of_words
+    def text(self):
+        return self._text
 
-    @bag_of_words.setter
-    def bag_of_words(self, new_bag):
-        if isinstance(new_bag, set):
-            self._bag_of_words = new_bag
-
-        else:
-            raise TypeError("The argument has to be a set()")
+    @text.setter
+    def text(self, new_text):
+        self._text = new_text
+        self.bag_of_words = set(self._text.lower().split())
 
 
     def has_mistakes(self):
         '''Returns True if there are mistakes'''
-        return bool(self.spell_checker.unknown(self.original_text.split()))  # checking origin user input for mistakes (not translated)
+        return bool(self._spell_checker.unknown(self._text.split()))  # checking origin user input for mistakes (not translated)
 
     def has_cyrillic(self):
         '''Returns True if there are Cyrillic symbols'''
-        return bool(re.search('[а-яА-Я]', self.original_text))
+        return bool(re.search('[а-яА-Я]', self._text))
 
     def has_date(self):
         '''Returns True if there are dates'''
-        return bool(re.search(r'\d{4}-\d{2}', self.original_text))
+        return bool(re.search(r'\d{4}-\d{2}', self._text))
+
+    def has_emoji(self):
+        '''Returns True if there is an emoji'''
+        for char in self._text:
+            if char in UNICODE_EMOJI:
+                return True
+
+        return False
+
+    def correct_mistakes_in_text(self):
+        '''Corrects mistakes in the text by using SpellChecker module.
+           Returns message to user with spelling corrections'''
+        all_words = self.bag_of_words
+        wrong_words = self._spell_checker.unknown(all_words)
+        corrected_words = []
+        message_to_user = "Spelling correction:\n"
+
+        for wrong_word in wrong_words:
+            corrected_word = self._spell_checker.correction(wrong_word)
+            message_to_user += f"{wrong_word} -> {corrected_word}\n"
+            corrected_words.append(corrected_word)
+
+        self.bag_of_words = all_words.difference(wrong_words).union(corrected_words)
+
+        return message_to_user
+
+
 
