@@ -72,19 +72,8 @@ def main():
                     elif user_input.has_cyrillic():  # checks if there are Cyrillic symbols
                         
                         translator = Translator()
-
-                        try:
-                            translated_user_input = translator.translate(user_input.text.lower()).text
-
-                        except json.decoder.JSONDecodeError:
-
-                            magnito_bot.send_message(first_chat_id, first_chat_text * 2) # doubles that symbol and sends to the user
-
-                            new_offset = first_update_id + 1
-                            continue
-
-                        user_input.text = translated_user_input
-
+                        user_input.text = translator.translate(user_input.text.lower()).text
+                        
                         magnito_bot.send_message(first_chat_id, f"The translation is '{user_input.text}'")
 
 
@@ -127,7 +116,7 @@ def main():
 
         except Exception as e:
             magnito_bot.send_message(376385737, e)
-            raise e
+            #raise e
             new_offset = first_update_id + 1
 
 

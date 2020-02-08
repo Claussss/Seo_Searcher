@@ -48,4 +48,4 @@ class FolderImg(BaseFolder):
         if full_file_name in self.list_of_files:
             return self.directory + full_file_name
 
-        raise KeyError("There is no file like that")
+        raise KeyError(f"There is no file like that\n{full_file_name}\n")
