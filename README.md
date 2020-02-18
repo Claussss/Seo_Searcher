@@ -4,4 +4,4 @@ A telegram bot that looks for lessons from an online English grammar course "Sec
 # Used libraries
 - google cloud vision
 - googletrans
-- pyspellchecker
+- pyspellchecker.
