@@ -58,5 +58,3 @@ class UserInput():
 
         return message_to_user
 
-
-

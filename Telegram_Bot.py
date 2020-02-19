@@ -15,19 +15,19 @@ magnito_bot = BotHandler(token)  # object of the Bot class
 
 def main():
 
-    stickers = [
-        'CAADAgADmAADGB0GD38JjVV51eNUFgQ',
-        'CAADAgADqQADGB0GD3PlulRsd1MkFgQ',
-        'CAADAgADvAADGB0GD6SysPS40rdzFgQ',
-        'CAADAgADjwADGB0GD0ckrhn7ST9JFgQ',
-        'CAADAgADnwADGB0GDyWgsIdx524-FgQ']  # ids of stikers
+stickers = [
+'CAADAgADmAADGB0GD38JjVV51eNUFgQ',
+'CAADAgADqQADGB0GD3PlulRsd1MkFgQ',
+'CAADAgADvAADGB0GD6SysPS40rdzFgQ',
+'CAADAgADjwADGB0GD0ckrhn7ST9JFgQ',
+'CAADAgADnwADGB0GDyWgsIdx524-FgQ']  # id                                                                                                                                                                                                                                                                                                                                                                                                                            s of stikers
 
-    new_offset = 0
+new_offset = 0
 
-    img_folder = FolderImg("img/", "jpg")
-    txt_folder = FolderTxt("txt/", "txt")
+img_folder = FolderImg("img/", "jpg")
+txt_folder = FolderTxt("txt/", "txt")
 
-    print('Now launching...')
+print('Now launching...')
 
     while True:
         try:
