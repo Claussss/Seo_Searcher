@@ -42,7 +42,18 @@ def main():
                     first_update_id = current_update['update_id']
                     first_chat_id = current_update['message']['chat']['id']
                     first_chat_name = current_update['message']['from']['first_name']
-                    first_chat_text = current_update['message']['text']
+
+                    try:
+
+                        first_chat_text = current_update['message']['text']
+
+                    except KeyError:
+
+                        magnito_bot.send_message(first_chat_id, "I can NOT search by using this.")
+
+                        new_offset = first_update_id + 1
+                        continue
+
 
 
                     if first_chat_text == '/start':
@@ -86,6 +97,7 @@ def main():
 
 
 
+
                     negative_result = False
 
                     if len(user_input.text) >= 3: # skips if the len of the text less than 3
@@ -115,7 +127,7 @@ def main():
                         new_offset = first_update_id + 1
 
         except Exception as e:
-            magnito_bot.send_message(376385737, e)
+            magnito_bot.send_message(376385737, f"Error: {e}")
             #raise e
             new_offset = first_update_id + 1
 
