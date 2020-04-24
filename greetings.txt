@@ -2,7 +2,7 @@ Hey, {}, what's up?
 
 I am SEO Searcher, and I can search for different lessons from SOE by using keywords from the topics.
 Also, I have built-in google translator, so you can write keywords in Russian or Ukrainian.
-I have all the lessons from the beginning to November 2019.
+I have all the lessons from the beginning to March 2020.
 
 Here are a few tips how to use me:
 
